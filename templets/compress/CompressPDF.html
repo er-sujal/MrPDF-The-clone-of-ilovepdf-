@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spilt PDF</title>
+  <link rel="icon" href="../Photos/top.png">
+  <script src="D:\pdf_tools\SpiltPDf.js"></script>
+  <link rel="stylesheet" href="CompressUP.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Genos:wght@400&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nixie+One&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src=https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js></script>
+  <script defer src="js/pdfkit-standalone-0.10.0.js"></script>
+  <script defer src="js/blob-stream-0.1.3.js"></script>
+  <script src="js/pdf.min-2.5.207.js"></script>
+  <script src="js/FileSaver.min-2.0.4.js"></script>
+  <script src="js/sortable.min.1.10.2.js"></script>
+  <script src="D:\pdf_tools\SpiltPDf.js"></script>
+
+  <!-- <script src="MargePDF.js"></script> -->
+</head>
+
+<body>
+  <nav class="navbar">
+    <a href="../Main/index.html"><img src="../Photos/Mr.PDF.png" alt="Brnding"></a>
+    <div class="nav-links">
+      <a class="elnav" id="active" href="../compress/CompressPDF.html">Compress</a>
+      <a class="elnav" href="../Merge/MargePDF.html">Marge</a>
+      <a class="elnav" href="#">Edit</a>
+      <a class="elnav" href="#">Sign</a>
+      <a href="#formc" class="left">Contect Us</a>
+      <a href="#" class="left">Login</a>
+      <a href="#" class="left">Sign Up</a>
+    </div>
+    <button class="hamburger">
+      <span class="line"></span>
+      <span class="line"></span>
+      <span class="line"></span>
+    </button>
+  </nav>
+  <div class="intro">
+    <h1>Effortlessly Manage Your PDF Files With MR.PDF</h1>
+    <p>PDF splitter that allows you to split pages of any PDF document no matter the length.<br>
+      Your data is 100% secure becuse This website is serverless. <br>
+      Your privacy is our priority. </p>
+    </p>
+  </div>
+  <form action="/merge" method="post" enctype="multipart/form-data">
+    <center>
+      <label for="fileInput" class="custom-file-input">
+        <span class="custom-text">Select PDF File</span>
+        <input type="file" name="pdfs" id="fileInput" accept="application/pdf">
+      </label>
+
+      <div id="previewBox"></div>
+
+      
+
+    <br>
+    <button type="submit" class="submit">Compress Pdf</button>
+  </center>
+  </form>
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.0/pdf-lib.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+    <script>
+      const fileInput = document.getElementById('fileInput');
+      const previewBox = document.getElementById('previewBox');
+      const pdfInput = document.querySelector('#fileInput');
+      const SpiltBtn = document.getElementById('split-btn');
+
+      function createPdfBox(pdfDataUrl) {
+        const pdfObjectUrl = URL.createObjectURL(new Blob([pdfDataUrl], { type: 'application/pdf' }));
+        const pdfEmbed = document.createElement('embed');
+        pdfEmbed.src = pdfObjectUrl;
+        pdfEmbed.width = 200;
+        pdfEmbed.height = 300;
+        const pdfBox = document.createElement('div');
+        pdfBox.classList.add('pdfBox');
+        pdfBox.appendChild(pdfEmbed);
+        return pdfBox;
+      }
+
+      fileInput.addEventListener('change', () => {
+        for (const file of fileInput.files) {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const pdfDataUrl = reader.result;
+            const pdfBox = createPdfBox(pdfDataUrl);
+            previewBox.appendChild(pdfBox);
+          };
+          reader.readAsArrayBuffer(file);
+        }
+      });
+
+   
+
+
+
+    </script>
+</body>
+
+</html>
