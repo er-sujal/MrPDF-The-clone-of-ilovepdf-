@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Merge PDF</title>
+  <link rel="icon" href="../Photos/top.png">
+  <link rel="stylesheet" href="MargeUP.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Genos:wght@400&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nixie+One&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src=https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js></script>
+  <script src="https://kit.fontawesome.com/2857f3daf6.js" crossorigin="anonymous"></script>
+  <!-- <script src="MargePDF.js"></script> -->
+</head>
+
+<body>
+  <nav class="navbar">
+    <a href="../Main/index.html"><img src="../Photos/Mr.PDF.png" alt="Brnding"></a>
+    <div class="nav-links">
+      <a class="elnav" href="../compress/CompressPDF.html">Compress</a>
+      <a class="elnav" id="active" href="../Merge/MargePDF.html">Marge</a>
+      <a class="elnav" href="#">Edit</a>
+      <a class="elnav" href="#">Sign</a>
+      <a href="#formc" class="left">Contect Us</a>
+      <a href="#" class="left">Login</a>
+      <a href="#" class="left">Sign Up</a>
+    </div>
+    <button class="hamburger">
+      <span class="line"></span>
+      <span class="line"></span>
+      <span class="line"></span>
+    </button>
+  </nav>
+  <div class="intro">
+    <h1>Effortlessly Manage Your PDF Files With MR.PDF</h1>
+    <p>Combine PDFs in the order you want with the easiest PDF merger available. <br>
+      Your data is 100% secure becuse This website is serverless. <br>
+      Your privacy is our priority. </p>
+    </p>
+  </div>
+  <style>
+    #previewBox {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .pdfBox {
+      width: 200px;
+      height: 300px;
+      border: 1px solid black;
+    }
+  </style>
+
+  <!-- <input type="file" id="fileInput" multiple accept="application/pdf"> -->
+  <center><label for="fileInput" class="custom-file-input">
+      <span class="custom-text">Select PDF Files</span>
+      <input type="file" id="fileInput" multiple accept="application/pdf">
+    </label>
+  </center>
+
+  <button class="b1" id="Addmore"
+    style="margin: 1rem 40% 1rem 44%; font-size: 2rem; background-color: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Add
+    more files</button>
+  <button class="b2" id="MergeAll"
+    style="margin: 1rem 45% 1rem 45%; font-size: 2rem; background-color: #2ecc71; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Merge
+    All</button>
+
+  <div id="previewBox"></div>
+  <!-- <button id="merge-button">Merge PDFs</button> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.0/pdf-lib.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+  <!-- <script src="MargePDF.js"></script> -->
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const previewBox = document.getElementById('previewBox');
+    // const mergeButton = document.querySelector('#merge-button');
+    const pdfInput = document.querySelector('#fileInput');
+    const addMoreButton = document.getElementById('Addmore');
+    const mergeAllButton = document.getElementById('MergeAll')
+
+    // mergeButton.addEventListener('click', async () => {
+    //     const files = pdfInput.files;
+    //     const allFiles = Array.from(files);
+    //     const pdfBoxes = Array.from(previewBox.children);
+    //     const pdfDataUrls = pdfBoxes.map((pdfBox) => pdfBox.firstChild.src);
+
+    //     for (const pdfDataUrl of pdfDataUrls) {
+    //         const pdfBytes = await fetch(pdfDataUrl).then((res) => res.arrayBuffer());
+    //         const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+    //         const file = new File([blob], 'filename.pdf', { type: 'application/pdf' });
+    //         allFiles.push(file);
+    //     }
+
+    //     if (allFiles.length === 0) {
+    //         alert('Please select at least one PDF file.');
+    //         return;
+    //     }
+
+    //     const pdfDoc = await PDFLib.PDFDocument.create();
+    //     for (const file of allFiles) {
+    //         const buffer = await file.arrayBuffer();
+    //         const srcDoc = await PDFLib.PDFDocument.load(buffer);
+    //         const copiedPages = await pdfDoc.copyPages(srcDoc, srcDoc.getPageIndices());
+    //         copiedPages.forEach(page => pdfDoc.addPage(page));
+    //     }
+
+    //     const pdfBytes = await pdfDoc.save();
+    //     const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+    //     const url = URL.createObjectURL(blob);
+    //     window.open(url);
+    // });
+
+    function createPdfBox(pdfDataUrl) {
+      const pdfObjectUrl = URL.createObjectURL(new Blob([pdfDataUrl], { type: 'application/pdf' }));
+      const pdfEmbed = document.createElement('embed');
+      pdfEmbed.src = pdfObjectUrl;
+      pdfEmbed.width = 200;
+      pdfEmbed.height = 300;
+      const pdfBox = document.createElement('div');
+      pdfBox.classList.add('pdfBox');
+      pdfBox.appendChild(pdfEmbed);
+      return pdfBox;
+    }
+
+    fileInput.addEventListener('change', () => {
+      for (const file of fileInput.files) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const pdfDataUrl = reader.result;
+          const pdfBox = createPdfBox(pdfDataUrl);
+          previewBox.appendChild(pdfBox);
+        };
+        reader.readAsArrayBuffer(file);
+      }
+    });
+
+    Sortable.create(previewBox, {
+      handle: '.pdfBox',
+      animation: 150,
+      onEnd: () => {
+        const pdfBoxes = Array.from(previewBox.children);
+        const pdfDataUrls = pdfBoxes.map((pdfBox) => pdfBox.firstChild.src);
+        previewBox.innerHTML = '';
+        pdfDataUrls.forEach((pdfDataUrl) => {
+          const pdfBox = createPdfBox(pdfDataUrl);
+          previewBox.appendChild(pdfBox);
+
+
+        });
+      }
+    });
+    // const addMoreButton = document.createElement('button');
+    // addMoreButton.textContent = 'Add more files';
+    addMoreButton.addEventListener('click', () => {
+      const newFileInput = document.createElement('input');
+      newFileInput.type = 'file';
+      newFileInput.multiple = true;
+      newFileInput.style.display = 'none';
+      newFileInput.addEventListener('change', () => {
+        for (const file of newFileInput.files) {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const pdfDataUrl = reader.result;
+            const pdfBox = createPdfBox(pdfDataUrl);
+            previewBox.appendChild(pdfBox);
+          };
+          reader.readAsArrayBuffer(file);
+        }
+      });
+      newFileInput.click();
+    });
+
+    // const mergeAllButton = document.createElement('button');
+    // mergeAllButton.textContent = 'Merge All';
+    mergeAllButton.addEventListener('click', async () => {
+      const pdfBoxes = Array.from(previewBox.children);
+      if (pdfBoxes.length === 0) {
+        alert('Please select at least one PDF file.');
+        return;
+      }
+
+      const pdfDoc = await PDFLib.PDFDocument.create();
+      for (const pdfBox of pdfBoxes) {
+        const pdfEmbed = pdfBox.firstChild;
+        const pdfUrl = pdfEmbed.src;
+        const pdfResponse = await fetch(pdfUrl);
+        const pdfData = await pdfResponse.arrayBuffer();
+        const srcDoc = await PDFLib.PDFDocument.load(pdfData);
+        const copiedPages = await pdfDoc.copyPages(srcDoc, srcDoc.getPageIndices());
+        copiedPages.forEach((page) => pdfDoc.addPage(page));
+      }
+
+      const elementRem = document.getElementById('Addmore');
+      elementRem.parentNode.removeChild(elementRem);
+      const elementRem2 = document.getElementById('previewBox');
+      elementRem2.parentNode.removeChild(elementRem2);
+      const elementRem3 = document.getElementById('MergeAll');
+      elementRem3.parentNode.removeChild(elementRem3);
+
+
+      const pdfBytes = await pdfDoc.save();
+      const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+      // open pdf in new window
+      // window.open(url);
+
+      const btn = document.createElement('button');
+      const downloadButton = document.createElement('a');
+      downloadButton.href = url;
+      downloadButton.download = 'merged.pdf';
+      downloadButton.textContent = 'Download merged PDF';
+      btn.appendChild(downloadButton);
+      // document.body.innerHTML = '';
+      document.body.appendChild(downloadButton);
+      downloadButton.style.display = 'flex';
+      downloadButton.style.padding = '12px 20px';
+      downloadButton.style.backgroundColor = '#007bff';
+      downloadButton.style.color = '#fff';
+      downloadButton.style.textDecoration = 'none';
+      downloadButton.style.borderRadius = '4px';
+      downloadButton.style.fontSize = '16px';
+      downloadButton.style.fontWeight = '600';
+      downloadButton.style.border = '2px solid #007bff';
+      downloadButton.style.transition = 'all 0.2s ease-in-out';
+      downloadButton.style.justifyContent = 'center';
+      downloadButton.style.margin = '0 38%';
+
+      // add hover styles to the download button
+      downloadButton.addEventListener('mouseover', () => {
+        downloadButton.style.backgroundColor = '#fff';
+        downloadButton.style.color = '#007bff';
+        downloadButton.style.borderColor = '#007bff';
+      });
+
+      downloadButton.addEventListener('mouseout', () => {
+        downloadButton.style.backgroundColor = '#007bff';
+        downloadButton.style.color = '#fff';
+        downloadButton.style.borderColor = '#007bff';
+      });
+    });
+    // adding extra fetures
+
+    // mergedPdfDoc.save().then((mergedPdfData) => {
+    //   // Download merged PDF
+    //   const mergedPdfBlob = new Blob([mergedPdfData], { type: 'application/pdf' });
+    //   const mergedPdfUrl = URL.createObjectURL(mergedPdfBlob);
+
+
+    // });
+
+    const mergeButtonsContainer = document.createElement('div');
+    // mergeButtonsContainer.appendChild(mergeButton);
+    mergeButtonsContainer.appendChild(mergeAllButton);
+
+    const buttonsContainer = document.createElement('div');
+    buttonsContainer.appendChild(addMoreButton);
+    buttonsContainer.appendChild(mergeButtonsContainer);
+
+    const mainContainer = document.createElement('div');
+    mainContainer.appendChild(fileInput);
+    mainContainer.appendChild(previewBox);
+    mainContainer.appendChild(buttonsContainer);
+
+    document.body.appendChild(mainContainer);
+
+
+  </script>
+
+
+
+
+</body>
+
+</html>
